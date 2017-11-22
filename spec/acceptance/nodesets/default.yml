@@ -6,9 +6,14 @@ HOSTS:
     platform: el-7-x86_64
     roles:
       - agent
+    docker_preserve_image: true
     docker_cmd: '["/sbin/init"]'
 CONFIG:
   type: foss 
-  log_level: debug 
-  
-
+  log_level: verbose
+ # log_level: debug
+ssh:
+  auth_methods: 
+   - password  
+  user: root
+  password: root

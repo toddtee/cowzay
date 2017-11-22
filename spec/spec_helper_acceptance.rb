@@ -1,7 +1,7 @@
 require 'beaker-rspec'
 require 'beaker/puppet_install_helper'
  
-#run_puppet_install_helper
+run_puppet_install_helper unless ENV['BEAKER_provision'] == 'no'
 
 #Install Puppet on all hosts
 install_puppet_agent_on(hosts, options)
@@ -28,7 +28,7 @@ RSpec.configure do |c|
 
     #dependencies installed to provide mongod.service
     #hosts.each do |host|
-    #  shell("yum -y install cyrus-sasl cyrus-sasl-gssapi cyrus-sasl-plain krb5-libs libcurl libpcap lm_sensors-libs net-snmp net-snmp-agent-libs openldap openssl rpm-libs tcp_wrappers-libs")
+    #  shell("yum -y install sshd")
     #end
 
   end

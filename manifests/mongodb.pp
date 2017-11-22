@@ -3,7 +3,7 @@ class cowzay::mongodb {
 ###### MongoDB Firewall Config ##########
 
  #open port 27018 to in public zone
-  firewalld_port { 'Open port 27018 in public zone':
+  firewalld_port { 'Open port 27017 in public zone':
     ensure    => 'present',
     zone      => 'public',
     port      => '27017',
@@ -12,7 +12,7 @@ class cowzay::mongodb {
  
  #disable 27017; puppet didn't like the default mongodb port, want to disable until we know why 
 
-  firewalld_port { 'Close 27017 in public zone':
+  firewalld_port { 'Close 27018 in public zone':
     ensure    => 'absent',
     zone      => 'public',
     port      => '27018' , 
@@ -48,31 +48,21 @@ class cowzay::mongodb {
 #manage the port and ensure server is present
 
   class { '::mongodb::server':
-    port    => 27017,                   #default port did not work; utilised shardsrv port instead
-    verbose => true,
-    #logpath => '/var/log/mongodb/mongodb.log',
-    #dbpath => '/var/lib/mongodb',
-    auth => true,                      #issues creating users https://tickets.puppetlabs.com/browse/MODULES-534
+    port            => 27017,     
+    #auth            => false,                      #issues creating admin users https://tickets.puppetlabs.com/browse/MODULES-534
+    #create_admin   => true,
+    #admin_username => 'admin',
+    #admin_password => 'admin',
+    verbose         => true,
+    logpath         => '/var/log/mongodb/mongodb.log',
+    dbpath          => '/var/lib/mongodb',
   }
 
-  #mongodb_database { 'cowzaydb':
-  #  ensure => present,
-  #}  
-  
-  #mongodb_user { tester:
-  #  username => 'tester',
-  #  ensure => present,
-  #  password_hash => '768747907b90c39ab6f16fcb3320897a',
-  #  database => cowzaydb,
-  #  roles => ['dbadmin'],
-  #  tries => 3,
-  #  require => Class['mongodb::server'],
-
-  #} 
-  #service { 'mongod' :
-  #  ensure => 'running',
-  #  enable => true,
-  #}
+  mongodb::db {'cowzaydb':
+    user          => 'admin',
+    password_hash => '7c67ef13bbd4cae106d959320af3f704',  #admin:mongo:admin
+    roles         => ['dbAdmin'],
+  }
 
 }
 
