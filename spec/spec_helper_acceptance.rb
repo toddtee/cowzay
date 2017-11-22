@@ -28,9 +28,9 @@ RSpec.configure do |c|
     end
 
     #dependencies installed to provide mongod.service
-    hosts.each do |host|
-      shell("yum -y install cyrus-sasl cyrus-sasl-gssapi cyrus-sasl-plain krb5-libs libcurl libpcap lm_sensors-libs net-snmp net-snmp-agent-libs openldap openssl rpm-libs tcp_wrappers-libs")
-    end
+    #hosts.each do |host|
+    #  shell("yum -y install cyrus-sasl cyrus-sasl-gssapi cyrus-sasl-plain krb5-libs libcurl libpcap lm_sensors-libs net-snmp net-snmp-agent-libs openldap openssl rpm-libs tcp_wrappers-libs")
+    #end
 
   end
       #if os-specific dependences are required for the test; use this block 

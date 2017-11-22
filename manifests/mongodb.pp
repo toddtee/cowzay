@@ -19,11 +19,19 @@ class cowzay::mongodb {
     protocol  => 'tcp',
  }
 
-############ MongoDB Config ##############
+############ mongodb config ##############
 
   file { '/etc/yum.repos.d/mongodb-org-3.0.repo':
     ensure => file,
     source => 'puppet:///modules/cowzay/mongodb-org-3.0.repo',
+  }
+
+############ Mongo Dependencies ##############
+
+  $mongoDependencies = ['cyrus-sasl', 'cyrus-sasl-gssapi', 'cyrus-sasl-plain', 'krb5-libs', 'libcurl', 'libpcap', 'lm_sensors-libs', 'net-snmp', 'net-snmp-agent-libs', 'openldap', 'openssl', 'rpm-libs', 'tcp_wrappers-libs']
+
+  package { $mongoDependencies: 
+    ensure => 'installed',
   }
 
 #install mongodb with version 3.0
