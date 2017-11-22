@@ -20,7 +20,6 @@ RSpec.configure do |c|
       copy_module_to(host, :source => proj_root, :module_name => 'cowzay')
       scp_to hosts, File.join(proj_root, 'spec/fixtures/hieradata/common.yaml'), '/etc/puppetlabs/code/environments/production/hieradata/common.yaml'
 
-#      on host, puppet('module install puppetlabs-stdlib'), {:acceptable_exit_codes => [0]} 
       on host, puppet('module install crayfishx-firewalld'), {:acceptable_exit_codes => [0]} 
       on host, puppet('module install puppetlabs-apache'),{:acceptable_exit_codes => [0]} 
       on host, puppet('module install puppet-mongodb'),{:acceptable_exit_codes => [0]} 
