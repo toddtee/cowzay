@@ -1,0 +1,21 @@
+Vagrant.configure("2") do |c|
+  c.ssh.insert_key = false
+  c.vm.define 'centos7-64-1' do |v|
+    v.vm.hostname = 'centos7-64-1'
+    v.vm.box = 'puppetlabs/centos-7.0-64-nocm'
+    v.vm.box_check_update = 'true'
+    v.vm.network :private_network, ip: "10.255.51.96", :netmask => "255.255.0.0", :mac => "080027006989"
+    v.vm.provider :virtualbox do |vb|
+      vb.customize ['modifyvm', :id, '--memory', '1024', '--cpus', '1']
+    end
+  end
+  c.vm.define 'centos7-64-2' do |v|
+    v.vm.hostname = 'centos7-64-2'
+    v.vm.box = 'puppetlabs/centos-7.0-64-nocm'
+    v.vm.box_check_update = 'true'
+    v.vm.network :private_network, ip: "10.255.248.218", :netmask => "255.255.0.0", :mac => "0800276806A4"
+    v.vm.provider :virtualbox do |vb|
+      vb.customize ['modifyvm', :id, '--memory', '1024', '--cpus', '1']
+    end
+  end
+end

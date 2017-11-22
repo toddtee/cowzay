@@ -1,0 +1,22 @@
+---
+HOSTS:
+  centos7-64-1:
+    hypervisor: docker
+    image: centos:7 
+    platform: el-7-x86_64
+    roles:
+      - agent
+      - master
+    docker_cmd: '["/sbin/init"]'
+  centos7-64-2:
+    hypervisor: docker
+    image: centos:7 
+    platform: el-7-x86_64
+    roles:
+      - agent
+    docker_cmd: '["/sbin/init"]'
+CONFIG:
+  nfs_server: none
+  type: foss 
+  log_level: verbose
+

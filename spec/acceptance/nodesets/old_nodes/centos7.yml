@@ -1,0 +1,33 @@
+---
+HOSTS:
+  centos7-64-1:
+    pe_dir: 
+    pe_ver: 
+    pe_upgrade_dir: 
+    pe_upgrade_ver: 
+    hypervisor: vagrant
+    box: puppetlabs/centos-7.0-64-nocm
+    platform: el-7-x86_64
+    auth_methods:
+      - password
+    roles:
+    - agent
+    - master
+  centos7-64-2:
+    pe_dir: 
+    pe_ver: 
+    pe_upgrade_dir: 
+    pe_upgrade_ver: 
+    hypervisor: vagrant
+    box: puppetlabs/centos-7.0-64-nocm
+    platform: el-7-x86_64
+    auth_methods:
+      - password
+    roles:
+    - agent
+CONFIG:
+  type: foss 
+  auth_methods:
+    - password
+
+
