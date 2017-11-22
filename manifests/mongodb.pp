@@ -37,12 +37,12 @@ class cowzay::mongodb {
 #install mongodb with version 3.0
 
   class { '::mongodb::globals':
-    manage_package_repo => false, 
+    manage_package_repo   => false, 
     mongod_service_manage => true,
-    server_package_name => 'mongodb-org',
-    version             => '3.0.4',
-    user => 'mongod',
-    group => 'mongod',
+    server_package_name   => 'mongodb-org',
+    version               => '3.0.4',
+    user                  => 'mongod',
+    group                 => 'mongod',
   }
 
 #manage the port and ensure server is present

@@ -21,7 +21,7 @@ class cowzay::apache {
 ####### Apache Configuration #############
 
   class { 'apache':			#install apache and configures basic server
-    default_vhost => false,
+    default_vhost  => false,
     service_enable => true,		#controls if httpd starts on boot
     service_ensure => true,
     apache_version => '2.4',		#ensures 2.4 is installed

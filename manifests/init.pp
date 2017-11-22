@@ -1,7 +1,7 @@
 class cowzay {
 
   class {'firewalld':
-    package => 'firewalld',
+    package        => 'firewalld',
     service_ensure => 'running',
   } 
 
