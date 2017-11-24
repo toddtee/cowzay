@@ -7,13 +7,22 @@ HOSTS:
     roles:
       - agent
     docker_preserve_image: true
-    docker_cmd: '["/sbin/init"]'
+    docker_cmd: '["/usr/sbin/init"]'
+    ip: 172.17.0.2
+    hostname: centos7-64-1
+    vmhostname: centos7-64-1
+    ssh_preference: 
+     - :ip
+     - :hostname
+     - :vmhostname
 CONFIG:
   type: foss 
+  forward_ssh_agent: true
   log_level: verbose
  # log_level: debug
 ssh:
   auth_methods: 
    - password  
+   #- publickey
   user: root
   password: root
