@@ -1,4 +1,5 @@
 require 'spec_helper_acceptance'
+require_relative './setup.rb'
 
 describe 'cowzay' do
 
@@ -12,6 +13,8 @@ describe 'cowzay' do
       apply_manifest(pp, :expect_changes  => true)
     end
 
+ ########################################### System Checks ###########################################
+
     describe package('firewalld') do
       it {should be_installed }
     end
@@ -20,38 +23,70 @@ describe 'cowzay' do
       it { should be_enabled }
       it { should be_running }
     end
-    
-    describe service('mongod') do
-      it { should be_enabled }
-      it { should be_running }
+   
+ ########################################### Apache Checks ###########################################
+
+    describe package("#{$apache_package}") do
+      it { should be_installed.with_version("#{$httpd_ver}") }
     end
-  
+
+    describe service("#{$apache_service}") do
+      it { should be_running }
+      it { should be_enabled }
+    end
+    
     describe command('sudo firewall-cmd --zone=public --list-ports') do
-      its(:stdout) {should contain('80/tcp') }
+      its(:stdout) {should contain("#{$httpd_port}/tcp") }
     end
 
-    
-    describe package('httpd') do
-      it { should be_installed.with_version('2.4.6') }
-    end
-
-    describe service('httpd') do
-      it { should be_running }
-      it { should be_enabled }
-    end
-    
-    describe service('mysqld') do
-      it { should be_running }
-      it { should be_enabled }
-    end
-
-    describe file('/etc/httpd/conf/httpd.conf') do
+    describe file("#{$httpd_conf}") do
       it { should be_file }
     end 
 
-    describe file('/var/www/cowzay') do
+    describe file("#{$doc_root}"'/cowzay') do
       it { should be_directory }
     end  
+    
+    describe file("#{$doc_root}""#{$vhost}"'/index.html') do
+      it { should be_file }
+      its (:content) {should eq "#{$expected_content}" } 
+    end 
+
+    describe file('/etc/httpd/conf.d/25-'"#{$vhost}"'.com.conf') do
+      it { is_expected.to contain '<VirtualHost *:80>' }
+    end
+ 
+ ########################################### Mongodb Checks ###########################################
+
+    describe command('rpm -qa | grep '"#{$mongodb_package}") do   #shell cmd is more precise
+      its(:stdout) {should contain("#{$mongodb_ver}") }
+    end
+    
+    describe service("#{$mongodb_service}") do
+      it { should be_enabled }
+      it { should be_running }
+    end
+    
+    describe command('sudo firewall-cmd --zone=public --list-ports') do
+      its(:stdout) {should contain("#{$mongodb_port}/tcp") }
+    end
+
+  
+ ########################################### MySQL Checks ###########################################
+
+    describe command('rpm -qa | grep '"#{$mysql_package}") do   #shell cmd is more precise
+      its(:stdout) {should contain("#{$mysql_ver}") }
+    end
+
+    describe service("#{$mysql_service}") do
+      it { should be_running }
+      it { should be_enabled }
+    end
+    
+    describe command('sudo firewall-cmd --zone=public --list-ports') do
+      its(:stdout) {should contain("#{$mysql_port}/tcp") }
+    end
+
   end 
 end
 
