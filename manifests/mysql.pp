@@ -13,21 +13,18 @@ class cowzay::mysql {
   }
 
  
-  $mariadb = ['MariaDB-common', 'MariaDB-client', 'MariaDB-server', 'MariaDB-libs', 'boot-program-options', 'galera', 'jemalloc', 'lsof']
+  $mariadb_pkgs = ['MariaDB-common', 'MariaDB-client', 'MariaDB-server', 'MariaDB-libs', 'boot-program-options', 'galera', 'jemalloc', 'lsof']
+  $mariadb_files = ['/etc/systemd/system/mysqld.service', '/etc/systemd/system/mariadb.service']
 
-  package { $mariadb:
+  package { $mariadb_pkgs:
     ensure => purged,
   }
 
 
-  file { '/etc/systemd/system/mysqld.service' :
+  file { $mariadb_files :
     ensure => absent,
   }
   
-  file { '/etc/systemd/system/mariadb.service' :
-    ensure => absent,
-  }
-
 #puppet code for obtaining MySQL 5.6 on CentOS7
 #Works in conjunction with hiera; see https://github.com/puppetlabs/puppetlabs-mysql#install-mysql-community-server-on-centos
 
