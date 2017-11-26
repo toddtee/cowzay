@@ -50,5 +50,13 @@ class cowzay::mysql {
     root_password           => 'puppet',
     remove_default_accounts => true,
   }  
+  
+#create test database
+  mysql_database { 'cowzaydb':
+    ensure  => present,
+    charset => 'utf8',
+    collate => 'utf8_swedish_ci',
+  }
+  
 }
 

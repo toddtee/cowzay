@@ -31,8 +31,8 @@ describe 'cowzay' do
     end
 
     describe service("#{$apache_service}") do
-      it { should be_running }
       it { should be_enabled }
+      it { should be_running }
     end
     
     describe command('sudo firewall-cmd --zone=public --list-ports') do
@@ -45,6 +45,9 @@ describe 'cowzay' do
 
     describe file("#{$doc_root}"'/cowzay') do
       it { should be_directory }
+      it { should be_mode 755 }
+      it { should be_owned_by 'root' }
+      it { should be_grouped_into 'root' }
     end  
     
     describe file("#{$doc_root}""#{$vhost}"'/index.html') do
@@ -79,12 +82,25 @@ describe 'cowzay' do
     end
 
     describe service("#{$mysql_service}") do
-      it { should be_running }
       it { should be_enabled }
+      it { should be_running }
     end
     
     describe command('sudo firewall-cmd --zone=public --list-ports') do
       its(:stdout) {should contain("#{$mysql_port}/tcp") }
+    end
+
+    describe 'MySQL Configurations' do 
+      context mysql_config('datadir') do
+        its(:value) { should eq '/var/lib/mysql/'}
+      end
+      context mysql_config('socket') do
+        its(:value) { should eq '/var/lib/mysql/mysql.sock' }
+      end
+    end
+
+    describe command('mysql --user "root" --execute "SHOW DATABASES LIKE '"'""#{$mysql_db}""'"';" | grep '"#{$mysql_db}") do   
+      its(:stdout) {should contain("#{$mysql_db}") }
     end
 
   end 
