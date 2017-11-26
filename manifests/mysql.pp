@@ -8,8 +8,30 @@ class cowzay::mysql {
     protocol  => 'tcp', 
   } 
 
+  service { 'mariadb' :
+    ensure => stopped,
+  }
+
+ 
+  $mariadb = ['MariaDB-common', 'MariaDB-client', 'MariaDB-server', 'MariaDB-libs', 'boot-program-options', 'galera', 'jemalloc', 'lsof']
+
+  package { $mariadb:
+    ensure => purged,
+  }
+
+
+  file { '/etc/systemd/system/mysqld.service' :
+    ensure => absent,
+  }
+  
+  file { '/etc/systemd/system/mariadb.service' :
+    ensure => absent,
+  }
+
 #puppet code for obtaining MySQL 5.6 on CentOS7
 #Works in conjunction with hiera; see https://github.com/puppetlabs/puppetlabs-mysql#install-mysql-community-server-on-centos
+
+#  include ::mysql::server
 
   create_resources(yumrepo, hiera('yumrepo', {}))
 
@@ -17,6 +39,12 @@ class cowzay::mysql {
   Yumrepo['repo.mysql.com'] -> Package['mysql_client']
 
   create_resources(mysql::db, hiera('mysql::server::db', {}))
+  
+  file { '/usr/lib/systemd/system/mysqld.service' :
+    ensure => file,
+    source => 'puppet:///modules/cowzay/mysql.service',
+  }
+
 
 #create mysql server, ensure service enabled
 
