@@ -39,6 +39,7 @@ class cowzay::apache {
   file { '/var/www/cowzay':		#manages the site directory, ie purges it, recreates
     ensure  => directory,
     source  => 'puppet:///modules/cowzay/cowzay',
+    mode    => '0755',
     recurse => true,
     purge   => true,
     force   => true,			#purge subdirectries and links
