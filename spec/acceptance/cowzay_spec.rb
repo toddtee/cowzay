@@ -79,9 +79,18 @@ describe 'cowzay' do
     end
     
     describe command('sudo firewall-cmd --zone=public --list-ports') do
-      its(:stdout) {should contain("#{$mongodb_port}/tcp") }
+      its(:stdout) { should contain("#{$mongodb_port}/tcp") }
     end
 
+    describe user ('mongod') do
+      it { should exist }
+      it { should belong_to_group 'mongod' }
+      it { should_not have_home_directory '/home/mongod' }
+    end
+
+    describe command('mongo --eval "db.getMongo().getDBNames()"') do
+      its(:stdout) { should contain("#{$mongodb_db}") }
+    end
   
  ########################################### MySQL Checks ###########################################
 

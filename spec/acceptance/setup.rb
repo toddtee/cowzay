@@ -13,6 +13,7 @@ if os[:family] == 'redhat'
   $mongodb_port    = '27017'
   $mongodb_package = 'mongodb-org-server*'
   $mongodb_service = 'mongod'
+  $mongodb_db      = 'mongcow'
 
   $mysql_ver       = '5.6.*'
   $mysql_port      = '3306'

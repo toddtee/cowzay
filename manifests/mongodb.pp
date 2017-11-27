@@ -2,7 +2,7 @@ class cowzay::mongodb {
 
 ###### MongoDB Firewall Config ##########
 
- #open port 27018 to in public zone
+ #open default port 27017 in public zone
   firewalld_port { 'Open port 27017 in public zone':
     ensure    => 'present',
     zone      => 'public',
@@ -10,7 +10,7 @@ class cowzay::mongodb {
     protocol  => 'tcp',
   }
  
- #disable 27017; puppet didn't like the default mongodb port, want to disable until we know why 
+ #disable 27018; sharding not implemented
 
   firewalld_port { 'Close 27018 in public zone':
     ensure    => 'absent',
@@ -37,7 +37,7 @@ class cowzay::mongodb {
 #install mongodb with version 3.0
 
   class { '::mongodb::globals':
-    manage_package_repo   => false, 
+    manage_package_repo   => false,                #package not managed as we require specific version
     mongod_service_manage => true,
     server_package_name   => 'mongodb-org',
     version               => '3.0.4',
@@ -49,17 +49,20 @@ class cowzay::mongodb {
 
   class { '::mongodb::server':
     port            => 27017,     
-    #auth            => false,                      #issues creating admin users https://tickets.puppetlabs.com/browse/MODULES-534
-    #create_admin   => true,
-    #admin_username => 'admin',
-    #admin_password => 'admin',
+    #auth            => true,                      #issues creating admin users https://tickets.puppetlabs.com/browse/MODULES-534
+    #noauth          => false,
+    handle_creds   => true,
+    store_creds   => true,
+    create_admin   => true,
+    admin_username => 'admin',
+    admin_password => 'password',
     verbose         => true,
     logpath         => '/var/log/mongodb/mongodb.log',
     dbpath          => '/var/lib/mongodb',
   }
 
-  mongodb::db {'cowzaydb':
-    user          => 'admin',
+  mongodb::db {'mongcow':
+    user          => 'mongod',
     password_hash => '7c67ef13bbd4cae106d959320af3f704',  #admin:mongo:admin
     roles         => ['dbAdmin'],
   }
