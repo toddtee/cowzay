@@ -55,8 +55,16 @@ describe 'cowzay' do
       its (:content) {should eq "#{$expected_content}" } 
     end 
 
+    describe file('/etc/httpd/conf/ports.conf') do
+      it { should be_file }
+      it { is_expected.to contain 'Listen 80' } 
+    end 
+
     describe file('/etc/httpd/conf.d/25-'"#{$vhost}"'.com.conf') do
+      it { should be_file }
       it { is_expected.to contain '<VirtualHost *:80>' }
+      it { is_expected.to contain 'ServerName '"#{$vhost}"'.com' }
+      it { is_expected.to contain 'DocumentRoot "'"#{$doc_root}""#{$vhost}"'"' }
     end
  
  ########################################### Mongodb Checks ###########################################
@@ -107,8 +115,11 @@ describe 'cowzay' do
 end
 
 
-### Detailed Exit Codes ####
-# :catch_failures  => true - expects 0 & 2
-# :catch_changes   => true - expects 0
-# :expect_failures => true - expects 0,4 & 6
-# :expect_changes  => true - expects 2 
+############ Detailed Exit Codes #############
+#                                            #
+# :catch_failures  => true - expects 0 & 2   #
+# :catch_changes   => true - expects 0       #
+# :expect_failures => true - expects 0,4 & 6 #
+# :expect_changes  => true - expects 2       # 
+#                                            #
+# ############################################
