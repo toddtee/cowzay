@@ -9,7 +9,7 @@ if os[:family] == 'redhat'
   $apache_service   = 'httpd'
   $expected_content = File.read('files/cowzay/index.html')
 
-  $mongodb_ver     = '3.0.4'
+  $mongodb_ver     = '3.0.15'
   $mongodb_port    = '27017'
   $mongodb_package = 'mongodb-org-server*'
   $mongodb_service = 'mongod'

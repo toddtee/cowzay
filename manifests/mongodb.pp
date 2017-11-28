@@ -40,7 +40,7 @@ class cowzay::mongodb {
     manage_package_repo   => false,                #package not managed as we require specific version
     mongod_service_manage => true,
     server_package_name   => 'mongodb-org',
-    version               => '3.0.4',
+    version               => '3.0.15',
     user                  => 'mongod',
     group                 => 'mongod',
   }
